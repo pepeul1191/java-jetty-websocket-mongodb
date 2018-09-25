@@ -31,7 +31,7 @@
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.13</version>
     </dependency>
-    <!-- Persistencia de Datos-->
+    <!-- Persistencia de Datos para Chat-->
     <dependency>
       <groupId>org.mongodb.morphia</groupId>
       <artifactId>morphia</artifactId>

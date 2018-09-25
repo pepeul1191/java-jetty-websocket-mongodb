@@ -13,12 +13,14 @@ import static spark.Spark.webSocket;
 import configs.FilterHandler;
 import sockets.ChatSocket;
 import static j2html.TagCreator.*;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.json.JSONObject;
 
 public class App {
-	public static Map<Session, String> userUsernameMap = new ConcurrentHashMap<>();
+	public static Map<String, Session> userUsernameMap = new ConcurrentHashMap<>();
 	public static int nextUserNumber = 1;
 
   public static void main(String args[]){
@@ -53,6 +55,17 @@ public class App {
 	}
 	//
 	public static void broadcastMessage(String sender, String message) {
+		for (Map.Entry<String, Session> entry : userUsernameMap.entrySet()) {
+			System.out.println(entry.getKey() + ":" + entry.getValue());
+			try {
+				entry.getValue().getRemote().sendString(message);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		/*
 		userUsernameMap.keySet().stream().filter(Session::isOpen).forEach(session -> {
 			try {
 				String mensaje = String.valueOf(
@@ -65,6 +78,7 @@ public class App {
 				e.printStackTrace();
 			}
 		});
+		*/
 	}
 	//Builds a HTML element with a sender-name, a message, and a timestamp,
 	private static String createHtmlMessageFromSender(String sender, String message) {

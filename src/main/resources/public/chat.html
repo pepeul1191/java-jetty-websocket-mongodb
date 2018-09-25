@@ -41,8 +41,7 @@
 				var usuario_id_2 = $("#idUsuario2").val();
 				var conversacion_id = $("#idConversacion").val();
 				webSocket = $.simpleWebSocket({ 
-          url: 'ws://127.0.0.1:4000/ws/chat?nick=pp&tipo=subscritor&usuario_id_1=' + usuario_id_1 + '&usuario_id_2=' + usuario_id_2
-        });
+          url: 'ws://127.0.0.1:4000/ws/chat?nick=pp&tipo=subscritor&user_id=' + usuario_id_1});
 				webSocket.listen(function(message) {
 					console.log(message);
 					if(message["evento"] == "open"){

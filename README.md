@@ -34,3 +34,4 @@ Fuentes
 + https://sparktutorials.github.io/2015/11/08/spark-websocket-chat.html
 + https://github.com/tipsy/spark-websocket
 + https://github.com/perwendel/spark/issues/921
++ http://chuwiki.chuidiang.org/index.php?title=Serializaci%C3%B3n_de_objetos_en_java

@@ -2,9 +2,14 @@ package helpers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+
+import org.eclipse.jetty.websocket.api.Session;
 
 public abstract class ApplicationHelper {
   private Config constants = ConfigFactory.defaultApplication();
@@ -37,5 +42,15 @@ public abstract class ApplicationHelper {
       }
     }
     return retVal;
+  }
+
+  public static String getUserIdBySession(Map<String, Session> sessionMap, Session value) {
+    String userId = null;
+    for (Entry<String, Session> entry : sessionMap.entrySet()) {
+      if (entry.getValue() == value) {
+        userId = entry.getKey();
+      }
+    }
+    return userId;
   }
 }
