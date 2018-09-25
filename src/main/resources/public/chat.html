@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Index Demo</title>
+	<link href="http://localhost:4000/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+  	<link rel="shortcut icon" href="http://localhost:4000/favicon.ico">
+	<script src="http://localhost:4000/bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+    <script src="http://localhost:4000/bower_components/jquery-simple-websocket/dist/jquery.simple.websocket.min.js" type="text/javascript"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1>Prueba Web Sockets</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<h2>Conexión</h2>
+				idUsuario1 <input type="text" name="" id="idUsuario1" value="1"><br>
+				idUsuario2 <input type="text" name="" id="idUsuario2" value="1"><br>
+				<button id="btnConectarse">Conectarse</button>
+			</div>
+			<div class="col-md-6">
+				<h2>Conversación</h2>
+				idConversacion <input type="text" name="" id="idConversacion"><br>
+				idUsuario <input type="text" name="" id="idConversacionUsuario"><br>
+				Mensaje:<br>
+				<textarea id="texto"></textarea><br>
+				<button id="btnEnviar">Enviar</button><button id="btnCerrar">Cerrar</button><button id="btnLimpiar">Limpiar</button><br>
+				<ul id="ulMensajes"></ul>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">    
+		$( document ).ready(function() {
+			var webSocket = null;
+			$("#btnConectarse").click(function(event){
+				var usuario_id_1 = $("#idUsuario1").val();
+				var usuario_id_2 = $("#idUsuario2").val();
+				var conversacion_id = $("#idConversacion").val();
+				webSocket = $.simpleWebSocket({ 
+          url: 'ws://127.0.0.1:4000/ws/chat?nick=pp&tipo=subscritor&usuario_id_1=' + usuario_id_1 + '&usuario_id_2=' + usuario_id_2
+        });
+				webSocket.listen(function(message) {
+					console.log(message);
+					if(message["evento"] == "open"){
+						$("#idConversacion").val(message["conversacion_id"]);
+						var li = "<li>" + 'Conexión OK' + "</li>";
+						$("#ulMensajes").append(li);
+						for(var i = 0; i < message["mensajes"].length; i++){
+							var li = "<li>" + message["mensajes"][i]["usuario_id"] + " - " + new Date(message["mensajes"][i]["momento"]) + " - " + message["mensajes"][i]["mensaje"] + "</li>";
+							$("#ulMensajes").append(li);
+						}
+					}
+					if(message["evento"] == "on_message"){
+						var li = "<li>" + message["mensaje"] + "</li>";
+						var li = "<li>" + message["usuario_id"] + " - " + new Date(message["momento"]) + " - " + message["mensaje"] + "</li>";
+						$("#ulMensajes").append(li);
+					}
+				});
+			});
+		    $("#btnEnviar").click(function(event){
+				var mensaje = $("#texto").val();
+				var conversacion_id = $("#idConversacion").val();
+				var usuario_id = $("#idConversacionUsuario").val();
+				webSocket.send({ 'mensaje': mensaje, 'conversacion_id':conversacion_id, 'usuario_id': usuario_id }).done(function(message) {
+					console.log(message);
+				}).fail(function(message) {
+				    // error sending
+				    console.log(message);
+				});		
+			});
+		    $("#btnCerrar").click(function(event){
+				webSocket.close();
+			});
+		    $("#btnLimpiar").click(function(event){
+				$("#ulMensajes").empty();
+			});
+		});
+	</script>
+</body>
+</html>

@@ -20,6 +20,10 @@ Ejecutar Main Class usando Maven:
 
     $ mvn clean && mvn install && mvn exec:java -Dexec.mainClass="configs.App"
 
+#### Base de Datos RethinkDB
+
+    $ rethinkdb --bind all --http-port 9090
+
 --- 
 
 Fuentes
@@ -29,3 +33,4 @@ Fuentes
 + http://sparkjava.com/
 + https://sparktutorials.github.io/2015/11/08/spark-websocket-chat.html
 + https://github.com/tipsy/spark-websocket
++ https://github.com/perwendel/spark/issues/921

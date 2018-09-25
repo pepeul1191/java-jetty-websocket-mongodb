@@ -28,7 +28,7 @@ public class App {
 		staticFiles.header("Access-Control-Request-Method",  "*");
 		staticFiles.header("Access-Control-Allow-Headers",  "*");
 		//staticFiles.expireTime(600);
-		webSocket("/chat", ChatSocket.class);
+		webSocket("/ws/chat", ChatSocket.class);
 		//puerto
 		port(4000);
 		//CORS
