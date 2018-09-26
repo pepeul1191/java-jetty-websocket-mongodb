@@ -20,9 +20,72 @@ Ejecutar Main Class usando Maven:
 
     $ mvn clean && mvn install && mvn exec:java -Dexec.mainClass="configs.App"
 
-#### Base de Datos RethinkDB
+#### Consultas MongoDB:
 
-    $ rethinkdb --bind all --http-port 9090
+Query si elementos existen en arreglo:
+
+```
+db.getCollection('conversations').find({
+  "$and":[
+    {
+      members: {  
+        "$in": [
+          ObjectId("5ba84a28686d3e4988a57b64"),
+        ]
+      }
+    },
+    {
+      members: {
+        "$in": [
+          ObjectId("5ba84a28686d3e4988a57b65"),
+        ]
+      }
+    },   
+  ]
+})
+
+```
+
+Función para devolver conversación en función a dos miembros:
+
+```
+db.system.js.save({
+    _id: "getIdConversacionFunction",
+    value: function (usuario_id_1, usuario_id_2) {
+        var convsersation_id = null;
+        var doc = db.getCollection('conversations').find({
+          "$and":[
+            {
+              members: {  
+                "$in": [
+                  ObjectId(usuario_id_1),
+                ]
+              }
+            },
+            {
+              members: {
+                "$in": [
+                  ObjectId(usuario_id_2),
+                ]
+              }
+            },   
+          ]
+        }).toArray();
+        if(doc.length == 1){
+           convsersation_id = doc[0]['_id'].toString();
+        }
+        return convsersation_id;
+    }
+})
+```
+
+Llamar a función:
+
+```
+db.eval("getConversacionFunction('5ba84a28686d3e4988a57b64', '5ba84a28686d3e4988a57b65')")
+```
+
+---
 
 --- 
 
