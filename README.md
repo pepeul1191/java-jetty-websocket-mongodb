@@ -72,7 +72,7 @@ db.system.js.save({
           ]
         }).toArray();
         if(doc.length == 1){
-           convsersation_id = doc[0]['_id'].toString();
+           convsersation_id = doc[0]['_id'].str;
         }
         return convsersation_id;
     }

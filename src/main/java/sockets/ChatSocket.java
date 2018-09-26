@@ -45,8 +45,8 @@ public class ChatSocket {
       Database db = new Database();
       try{
         String chatMessage = data.getString("message");
-        ObjectId conversationObjectId = (ObjectId) db.getDatastore().getDB().eval("getIdConversacionFunction('" + userId + "', '" + guestId + "')");
-        if(conversationObjectId == null){
+        String conversationId = (String) db.getDatastore().getDB().eval("getIdConversacionFunction('" + userId + "', '" + guestId + "')");
+        if(conversationId == null){
           // create members
           List<ObjectId> members = new ArrayList<>();
           ObjectId mb1 = new ObjectId(userId);
@@ -58,14 +58,21 @@ public class ChatSocket {
           Message m1 = new Message(chatMessage, userId);
           messages.add(m1);
           // create conversation
-          Conversation c1 = new Conversation();
-          c1.setMessages(messages);
-          c1.setMembers(members);
-          c1.setCreated();
+          Conversation c = new Conversation();
+          c.setMessages(messages);
+          c.setMembers(members);
+          c.setCreated();
           // persist document
-          db.getDatastore().save(c1);
+          db.getDatastore().save(c);
         }else{
-          //myCursor.get(0);
+          ObjectId conversationObjectId = new ObjectId(conversationId);
+          Conversation c = db.getDatastore().find(Conversation.class).field("_id").equal(conversationObjectId).get();
+          //Message m1 = new Message(chatMessage, userId);
+          //c.getMessages().add(m1);
+          System.out.println("1 ++++++++++++++++++++++++++++++");
+          System.out.println(c);
+          System.out.println("2 ++++++++++++++++++++++++++++++");
+          //db.getDatastore().update(c);
         }
       }catch(Exception e){
         e.printStackTrace();
