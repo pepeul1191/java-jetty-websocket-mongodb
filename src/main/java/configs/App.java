@@ -82,6 +82,20 @@ public class App {
 		});
 		*/
 	}
+
+	public static void sendMessage(JSONObject rptaMessage){
+		try {
+			String guestId = rptaMessage.getString("guest_id");
+			Session guestSession = userUsernameMap.get(guestId);
+			guestSession.getRemote().sendString(rptaMessage.toString());
+			System.out.println(userUsernameMap);
+			System.out.println("3 ++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	//Builds a HTML element with a sender-name, a message, and a timestamp,
 	private static String createHtmlMessageFromSender(String sender, String message) {
 		return article(

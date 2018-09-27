@@ -22,6 +22,9 @@ public class ChatHandler{
       for(Object messageObject : messagesCursor){
         DBObject message = (DBObject) messageObject;
         JSONObject obj = new JSONObject();
+        //System.out.println("1 ++++++++++++++++++++++++++++++++");
+        //System.out.println(message.get("moment"));
+        //System.out.println("2 ++++++++++++++++++++++++++++++++");
         obj.put("content", message.get("content"));
         obj.put("moment", message.get("moment"));
         obj.put("user_id", message.get("userId"));

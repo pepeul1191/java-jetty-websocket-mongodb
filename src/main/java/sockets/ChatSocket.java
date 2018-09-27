@@ -65,17 +65,27 @@ public class ChatSocket {
           // persist document
           db.getDatastore().save(c);
         }else{
+          // update conversation in DB
           ObjectId conversationObjectId = new ObjectId(conversationId);
           Conversation c = db.getDatastore().find(Conversation.class).field("_id").equal(conversationObjectId).get();
           Message m = new Message(chatMessage, userId);
           c.getMessages().add(m);
           db.getDatastore().save(c);
+          // prepare response message
+          System.out.println("1 ++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+          JSONObject rptaMessage = new JSONObject();
+          rptaMessage.put("sender_id", userId);
+          rptaMessage.put("guest_id", guestId);
+          rptaMessage.put("conversation_id", conversationId);
+          rptaMessage.put("message", chatMessage);
+          rptaMessage.put("moment", m.getMoment());
+          System.out.println("2 ++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+          App.sendMessage(rptaMessage);
         }
       }catch(Exception e){
         e.printStackTrace();
       }
     }
     //String userId = ApplicationHelper.getUserIdBySession(App.userUsernameMap, session);
-    App.broadcastMessage(sender = userId, msg = message);
   }
 }
