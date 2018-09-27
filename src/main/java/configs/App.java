@@ -53,7 +53,7 @@ public class App {
 			return "Conxión OK";
 		});
 		//rutas a chat
-		get("/chat/messages/:conversation_id", ChatHandler.listar);	
+		get("/chat/messages", ChatHandler.listar);	
 	}
 	//
 	public static void broadcastMessage(String sender, String message) {

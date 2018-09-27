@@ -79,6 +79,39 @@ db.system.js.save({
 })
 ```
 
+Función para devolver los mensajes de la conversación en función a dos miembros:
+
+```
+db.system.js.save({
+    _id: "getMessagesFunction",
+    value: function (usuario_id_1, usuario_id_2) {
+        var messages = null;
+        var doc = db.getCollection('conversations').find({
+          "$and":[
+            {
+              members: {  
+                "$in": [
+                  ObjectId(usuario_id_1),
+                ]
+              }
+            },
+            {
+              members: {
+                "$in": [
+                  ObjectId(usuario_id_2),
+                ]
+              }
+            },   
+          ]
+        }).toArray();
+        if(doc.length == 1){
+           messages= doc[0]['messages'];
+        }
+        return messages;
+    }
+})
+```
+
 Llamar a función:
 
 ```
