@@ -13,6 +13,8 @@ public class Message {
   private ObjectId userId;
   private Date moment;
 
+  public Message(){}
+
   public Message(String content, String userId) {
     this.content = content;
     this.userId = new ObjectId(userId);

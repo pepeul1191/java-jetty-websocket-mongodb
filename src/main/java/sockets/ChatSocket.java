@@ -49,14 +49,14 @@ public class ChatSocket {
         if(conversationId == null){
           // create members
           List<ObjectId> members = new ArrayList<>();
-          ObjectId mb1 = new ObjectId(userId);
-          ObjectId mb2 = new ObjectId(guestId);
-          members.add(mb1);
-          members.add(mb2);
+          ObjectId userObjectId = new ObjectId(userId);
+          ObjectId guestObjectId = new ObjectId(guestId);
+          members.add(userObjectId);
+          members.add(guestObjectId);
           // create messages
           List<Message> messages = new ArrayList<>();
-          Message m1 = new Message(chatMessage, userId);
-          messages.add(m1);
+          Message m = new Message(chatMessage, userId);
+          messages.add(m);
           // create conversation
           Conversation c = new Conversation();
           c.setMessages(messages);
@@ -67,12 +67,9 @@ public class ChatSocket {
         }else{
           ObjectId conversationObjectId = new ObjectId(conversationId);
           Conversation c = db.getDatastore().find(Conversation.class).field("_id").equal(conversationObjectId).get();
-          //Message m1 = new Message(chatMessage, userId);
-          //c.getMessages().add(m1);
-          System.out.println("1 ++++++++++++++++++++++++++++++");
-          System.out.println(c);
-          System.out.println("2 ++++++++++++++++++++++++++++++");
-          //db.getDatastore().update(c);
+          Message m = new Message(chatMessage, userId);
+          c.getMessages().add(m);
+          db.getDatastore().save(c);
         }
       }catch(Exception e){
         e.printStackTrace();
