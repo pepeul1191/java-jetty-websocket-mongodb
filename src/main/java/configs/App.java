@@ -13,7 +13,7 @@ import static spark.Spark.webSocket;
 import configs.FilterHandler;
 import sockets.ChatSocket;
 import static j2html.TagCreator.*;
-
+import handlers.ChatHandler;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,6 +52,8 @@ public class App {
 		get("/test/conexion", (request, response) -> {
 			return "Conxión OK";
 		});
+		//rutas a chat
+		get("/chat/messages/:conversation_id", ChatHandler.listar);	
 	}
 	//
 	public static void broadcastMessage(String sender, String message) {

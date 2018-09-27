@@ -19,5 +19,17 @@ public class Message {
     this.content = content;
     this.userId = new ObjectId(userId);
     this.moment = new Date();
-  }    
+  } 
+
+  public String getContent() {
+    return content;
+  }
+
+  public Date getMoment() {
+    return moment;
+  }
+
+  public ObjectId getUserId() {
+    return this.userId;
+  }
 }
