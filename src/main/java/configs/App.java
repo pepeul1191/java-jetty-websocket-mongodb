@@ -88,8 +88,6 @@ public class App {
 			String guestId = rptaMessage.getString("guest_id");
 			Session guestSession = userUsernameMap.get(guestId);
 			guestSession.getRemote().sendString(rptaMessage.toString());
-			System.out.println(userUsernameMap);
-			System.out.println("3 ++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

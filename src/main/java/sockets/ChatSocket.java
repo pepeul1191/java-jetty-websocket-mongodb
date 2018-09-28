@@ -24,14 +24,14 @@ public class ChatSocket {
     Map<String, String> queryParams = ApplicationHelper.MakePairs(session.getUpgradeRequest().getQueryString());
     String userId = queryParams.get("user_id");
     App.userUsernameMap.put(userId, session);
-    App.broadcastMessage(sender = "Server", msg = (session + " joined the chat"));
+    //App.broadcastMessage(sender = "Server", msg = (session + " joined the chat"));
   }
 
   @OnWebSocketClose
   public void onClose(Session session, int statusCode, String reason) {
     String userId = ApplicationHelper.getUserIdBySession(App.userUsernameMap, session);
     App.userUsernameMap.remove(userId);
-    App.broadcastMessage(sender = "Server", msg = (userId + " left the chat"));
+    //App.broadcastMessage(sender = "Server", msg = (userId + " left the chat"));
   }
 
   @OnWebSocketMessage
@@ -72,14 +72,12 @@ public class ChatSocket {
           c.getMessages().add(m);
           db.getDatastore().save(c);
           // prepare response message
-          System.out.println("1 ++++++++++++++++++++++++++++++++++++++++++++++++++++++");
           JSONObject rptaMessage = new JSONObject();
           rptaMessage.put("sender_id", userId);
           rptaMessage.put("guest_id", guestId);
           rptaMessage.put("conversation_id", conversationId);
           rptaMessage.put("message", chatMessage);
           rptaMessage.put("moment", m.getMoment());
-          System.out.println("2 ++++++++++++++++++++++++++++++++++++++++++++++++++++++");
           App.sendMessage(rptaMessage);
         }
       }catch(Exception e){

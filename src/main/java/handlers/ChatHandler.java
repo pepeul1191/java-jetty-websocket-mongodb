@@ -19,18 +19,25 @@ public class ChatHandler{
     try {
       List<JSONObject> rptaTemp = new ArrayList<JSONObject>();
       BasicDBList messagesCursor = (BasicDBList) db.getDatastore().getDB().eval("getMessagesFunction('" + userId + "', '" + guestId + "')");
-      for(Object messageObject : messagesCursor){
-        DBObject message = (DBObject) messageObject;
-        JSONObject obj = new JSONObject();
-        //System.out.println("1 ++++++++++++++++++++++++++++++++");
-        //System.out.println(message.get("moment"));
-        //System.out.println("2 ++++++++++++++++++++++++++++++++");
-        obj.put("content", message.get("content"));
-        obj.put("moment", message.get("moment"));
-        obj.put("user_id", message.get("userId"));
-        rptaTemp.add(obj);
+      System.out.println("1 ++++++++++++++++++++++++++++++++++++++++");
+      System.out.println(messagesCursor);
+      System.out.println("2 ++++++++++++++++++++++++++++++++++++++++");
+      if(messagesCursor != null){
+        for(Object messageObject : messagesCursor){
+          DBObject message = (DBObject) messageObject;
+          JSONObject obj = new JSONObject();
+          //System.out.println("1 ++++++++++++++++++++++++++++++++");
+          //System.out.println(message.get("moment"));
+          //System.out.println("2 ++++++++++++++++++++++++++++++++");
+          obj.put("content", message.get("content"));
+          obj.put("moment", message.get("moment"));
+          obj.put("user_id", message.get("userId"));
+          rptaTemp.add(obj);
+        }
+        rpta = rptaTemp.toString();
+      }else{
+        rpta = "[]";
       }
-      rpta = rptaTemp.toString();
     }catch (Exception e) {
       e.printStackTrace();
       String[] error = {"Se ha producido un error en listar los mensajes de la conversión", e.toString()};
